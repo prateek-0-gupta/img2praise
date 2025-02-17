@@ -54,7 +54,6 @@ def load_image(image_path):
     if not os.path.exists(image_path):
         print(f"[ERROR] Image '{image_path}' does not exist.")
         return None
-
     try:
         image = Image.open(image_path)
         print(f"[INFO] Image loaded: '{image_path}'")
@@ -62,7 +61,6 @@ def load_image(image_path):
     except (UnidentifiedImageError, IOError) as e:
         print(f"[ERROR] Could not open image: {e}")
         return None
-
 
 def generate_caption(image, md_model):
     try:
@@ -113,10 +111,7 @@ def generate_speech(text, output_file="output.wav"):
         audio_chunks.append(audio)
 
     if audio_chunks:
-       
         full_audio = np.concatenate(audio_chunks, axis=0)
-        
-      
         sf.write(output_file, full_audio, 24000)
         print(f"[INFO] Speech saved to '{output_file}'")
         return True
@@ -131,26 +126,18 @@ def main():
     if not photo_path:
         print("[INFO] No photo captured. Exiting.")
         return
-
-
     print("[INFO] Loading Moondream model...")
     try:
         md_model = md.vl(model="./models/moondream-0_5b-int8.mf")
     except Exception as e:
         print(f"[ERROR] Failed to load Moondream model: {e}")
         return
-
-
     image = load_image(photo_path)
     if image is None:
         return  
-
-
     caption = generate_caption(image, md_model)
     if not caption:
         return 
-
-   
     PHI_model_path = "./models/phi/Phi-3-mini-4k-instruct-q4.gguf"
     print("[INFO] Loading text model...")
     try:
@@ -166,15 +153,10 @@ def main():
     except Exception as e:
         print(f"[ERROR] Failed to load text model: {e}")
         return
-
-  
     compliment = generate_compliment(caption, llm)
     if not compliment:
         return  
-
-    
     generate_speech(compliment)
-
 
 if __name__ == "__main__":
     main()
