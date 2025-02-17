@@ -1,0 +1,4 @@
+/venv
+/__pycache__
+/models/moondream-0_5b-int8.mf
+/models/phi/Phi-3-mini-4k-instruct-q4.gguf
